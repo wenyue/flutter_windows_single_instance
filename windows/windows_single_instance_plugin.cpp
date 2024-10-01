@@ -134,8 +134,9 @@ bool WindowsSingleInstancePlugin::isSingleInstance(std::wstring name) {
   if (mutex == NULL) {
       return false;
   }
+  bool result = GetLastError() != ERROR_ALREADY_EXISTS;
   ::ReleaseMutex(mutex);
-  return GetLastError() != ERROR_ALREADY_EXISTS;
+  return result;
 }
 
 }  // namespace
