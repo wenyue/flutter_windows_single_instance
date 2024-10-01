@@ -54,7 +54,6 @@ class WindowsSingleInstancePlugin : public flutter::Plugin {
   bool isSingleInstance(std::wstring pipe);
 
   private:
-    HANDLE mutex = NULL;
     flutter::PluginRegistrarWindows *registrar_;
 };
 
@@ -76,14 +75,8 @@ void WindowsSingleInstancePlugin::RegisterWithRegistrar(
   registrar->AddPlugin(std::move(plugin));
 }
 
-WindowsSingleInstancePlugin::WindowsSingleInstancePlugin(flutter::PluginRegistrarWindows *registrar) 
+WindowsSingleInstancePlugin::WindowsSingleInstancePlugin(flutter::PluginRegistrarWindows *registrar)
   : registrar_(registrar) {}
-
-WindowsSingleInstancePlugin::~WindowsSingleInstancePlugin() {
-  if (mutex != NULL) {
-      ::ReleaseMutex(mutex);
-  }
-}
 
 void WindowsSingleInstancePlugin::HandleMethodCall(
     const flutter::MethodCall<flutter::EncodableValue> &method_call,
@@ -136,19 +129,15 @@ void WindowsSingleInstancePlugin::HandleMethodCall(
 }
 
 bool WindowsSingleInstancePlugin::isSingleInstance(std::wstring name) {
-  // Only call once
-  if (mutex != NULL) {
-    return true;
-  }
 
   // Check for existing window
   std::wstring mutex_str = name.append(L".win.mutex");
-  mutex = ::CreateMutex(NULL, TRUE, mutex_str.c_str());
-  if (mutex == NULL || GetLastError() == ERROR_ALREADY_EXISTS) {
+  HANDLE mutex = ::CreateMutex(NULL, TRUE, mutex_str.c_str());
+  if (mutex == NULL) {
       return false;
   }
-
-  return true;
+  ::ReleaseMutex(mutex);
+  return GetLastError() != ERROR_ALREADY_EXISTS;
 }
 
 }  // namespace

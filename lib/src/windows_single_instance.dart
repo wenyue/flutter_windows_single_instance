@@ -138,6 +138,15 @@ class WindowsSingleInstance {
     await Isolate.spawn(_startReadPipeIsolate, {"port": reader.sendPort, "pipe": fullPipeName});
   }
 
+  static Future<bool> isSingleInstance(String pipeName) async {
+    if (!Platform.isWindows) {
+      return true;
+    }
+    final bool isSingleInstance =
+        await _channel.invokeMethod('isSingleInstance', <String, Object>{'pipe': pipeName});
+    return isSingleInstance;
+  }
+
   static void _bringWindowToFront() {
     _channel.invokeMethod('bringToFront');
   }
