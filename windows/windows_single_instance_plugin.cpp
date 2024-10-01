@@ -43,8 +43,6 @@ class WindowsSingleInstancePlugin : public flutter::Plugin {
 
   WindowsSingleInstancePlugin(flutter::PluginRegistrarWindows *registrar);
 
-  virtual ~WindowsSingleInstancePlugin();
-
  private:
   // Called when a method is called on this plugin's channel from Dart.
   void HandleMethodCall(
