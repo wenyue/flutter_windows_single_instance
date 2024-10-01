@@ -7,4 +7,9 @@ class WindowsSingleInstance {
     throw UnimplementedError(
         "windows_single_instance not supported on this platform");
   }
+
+  static Future<bool> isSingleInstance(String pipeName) async {
+    throw UnimplementedError(
+        "windows_single_instance not supported on this platform");
+  }
 }
