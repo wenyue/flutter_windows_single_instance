@@ -148,7 +148,6 @@ bool WindowsSingleInstancePlugin::isSingleInstance(std::wstring name) {
   }
 
   if (GetLastError() == ERROR_ALREADY_EXISTS) {
-    ::ReleaseMutex(mutex);
     mutex = NULL;
     return false;
   }
