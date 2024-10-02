@@ -82,6 +82,7 @@ WindowsSingleInstancePlugin::WindowsSingleInstancePlugin(flutter::PluginRegistra
 WindowsSingleInstancePlugin::~WindowsSingleInstancePlugin() {
   if (mutex != NULL) {
       ::ReleaseMutex(mutex);
+      ::CloseHandle(mutex)
   }
 }
 
@@ -148,6 +149,7 @@ bool WindowsSingleInstancePlugin::isSingleInstance(std::wstring name) {
   }
 
   if (GetLastError() == ERROR_ALREADY_EXISTS) {
+    ::CloseHandle(mutex)
     mutex = NULL;
     return false;
   }
