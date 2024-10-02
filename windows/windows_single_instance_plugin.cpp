@@ -148,7 +148,7 @@ bool WindowsSingleInstancePlugin::isSingleInstance(std::wstring name) {
   }
 
   if (GetLastError() == ERROR_ALREADY_EXISTS) {
-    ::CloseHandle(mutex)
+    ::CloseHandle(mutex);
     mutex = NULL;
     return false;
   }
