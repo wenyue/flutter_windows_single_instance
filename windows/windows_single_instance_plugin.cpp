@@ -82,7 +82,6 @@ WindowsSingleInstancePlugin::WindowsSingleInstancePlugin(flutter::PluginRegistra
 WindowsSingleInstancePlugin::~WindowsSingleInstancePlugin() {
   if (mutex != NULL) {
       ::ReleaseMutex(mutex);
-      ::CloseHandle(mutex)
   }
 }
 
